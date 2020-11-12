@@ -30,8 +30,13 @@ public class MenuviewModel extends AndroidViewModel{
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                int diasResult = simulador.cacular(solicitud);
-                dias.postValue(diasResult);
+                simulador.calcular(solicitud, new Simulador.Callback() {
+                    @Override
+                    public void cuandoEsteCalculado(int diasResult) {
+                        dias.postValue(diasResult);
+                    }
+                });
+
             }
         });
 
