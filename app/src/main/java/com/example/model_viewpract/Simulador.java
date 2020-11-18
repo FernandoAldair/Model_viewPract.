@@ -19,22 +19,33 @@ public class Simulador {
     }
 
     public void calcular(Solicitud solicitud, Callback callback) {
-        int capMin = 0;
-        int capDiaMin = 0;
+        int capMin = 1;
+        int capDiaMin = 1;
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {}
 
-        int dias;
-        if (solicitud.capitulos>7){
-            dias = solicitud.capitulos / solicitud.capDias + ((solicitud.capitulos / solicitud.capDias) / 7);
+        boolean error = false;
+        int dias = 0;
+
+        if (solicitud.capitulos < capMin){
+            callback.cuandoHayaErrorCapitulos(capMin);
+            error = true;
         }
-        else{
-            dias = solicitud.capitulos / solicitud.capDias;
+        if (solicitud.capDias < capDiaMin){
+            callback.cuandoHayaErrorCapDias(capDiaMin);
+            error = true;
         }
 
-        callback.cuandoEsteCalculado(dias);
-
+        if (!error){
+            if (solicitud.capitulos>7){
+                dias = solicitud.capitulos / solicitud.capDias + ((solicitud.capitulos / solicitud.capDias) / 7);
+            }
+            else{
+                dias = solicitud.capitulos / solicitud.capDias;
+            }
+            callback.cuandoEsteCalculado(dias);
+        }
     }
 }
 

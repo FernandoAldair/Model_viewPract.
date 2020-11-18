@@ -16,6 +16,8 @@ public class MenuviewModel extends AndroidViewModel{
     Simulador simulador;
 
     MutableLiveData<Integer> dias = new MutableLiveData<>();
+    MutableLiveData<Integer>errorcapitulos = new MutableLiveData<>();
+    MutableLiveData<Integer>errorcapDias = new MutableLiveData<>();
 
     public MenuviewModel(@NonNull Application application) {
         super(application);
@@ -24,7 +26,7 @@ public class MenuviewModel extends AndroidViewModel{
         simulador = new Simulador();
     }
 
-    public void calcular(int capitulos, int capDia){
+    public void calcular(final int capitulos, int capDia){
         final Simulador.Solicitud solicitud = new Simulador.Solicitud(capitulos,capDia);
 
         executor.execute(new Runnable() {
@@ -33,7 +35,19 @@ public class MenuviewModel extends AndroidViewModel{
                 simulador.calcular(solicitud, new Simulador.Callback() {
                     @Override
                     public void cuandoEsteCalculado(int diasResult) {
+                        errorcapitulos.postValue(null);
+                        errorcapDias.postValue(null);
                         dias.postValue(diasResult);
+                    }
+
+                    @Override
+                    public void cuandoHayaErrorCapitulos(int capitulosMin) {
+                        errorcapitulos.postValue(capitulosMin);
+                    }
+
+                    @Override
+                    public void cuandoHayaErrorCapDias(int capDiasMin) {
+                        errorcapDias.postValue(capDiasMin);
                     }
                 });
 

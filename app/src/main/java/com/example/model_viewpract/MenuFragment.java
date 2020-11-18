@@ -46,5 +46,30 @@ public class MenuFragment extends Fragment {
             }
         });
 
+        menuviewModel.errorcapitulos.observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer capitulos) {
+                if (capitulos != null){
+                    binding.capitulos.setError("Los capitulos no pueden ser inferior a uno");
+                }
+                else {
+                    binding.capitulos.setError(null);
+                }
+            }
+        });
+
+        menuviewModel.errorcapDias.observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer capDiasMin) {
+                if (capDiasMin != null){
+                    binding.capdia.setError("Los capitulos diarios no pueden ser inferior a uno");
+                }
+                else {
+                    binding.capdia.setError(null);
+                }
+            }
+        });
+
+
     }
 }
